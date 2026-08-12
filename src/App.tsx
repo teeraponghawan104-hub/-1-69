@@ -200,7 +200,7 @@ export default function App() {
     const url = URL.createObjectURL(blob);
     const a = document.createElement('a');
     a.href = url;
-    a.download = 'ถอดบทเรียนก่อนออกฝึก_มัธยมขนาดกลาง.txt';
+    a.download = 'สัมมนาระหว่างฝึก_พี่สู่น้อง_มัธยมขนาดกลาง.txt';
     a.click();
     URL.revokeObjectURL(url);
   };
@@ -211,7 +211,7 @@ export default function App() {
     const url = URL.createObjectURL(blob);
     const a = document.createElement('a');
     a.href = url;
-    a.download = 'ถอดบทเรียนก่อนออกฝึก_มัธยมขนาดกลาง.doc';
+    a.download = 'สัมมนาระหว่างฝึก_พี่สู่น้อง_มัธยมขนาดกลาง.doc';
     a.click();
     URL.revokeObjectURL(url);
   };
