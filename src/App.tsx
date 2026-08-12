@@ -305,7 +305,7 @@ export default function App() {
                   <div className="flex-1 max-w-xs h-[6px] bg-line rounded-full overflow-hidden">
                     <motion.div
                       className="h-full bg-gradient-to-r from-clay-deep to-clay rounded-full"
-                      initial={{ width: 0 }}
+                      initial={{ width: '0%' }}
                       animate={{ width: `${progressPercent}%` }}
                       transition={{ duration: 0.5, ease: "easeOut" }}
                     />

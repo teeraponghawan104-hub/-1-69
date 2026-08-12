@@ -11,13 +11,13 @@ export function Seal({ isReady }: SealProps) {
         initial={false}
         animate={
           isReady
-            ? { opacity: 1, filter: 'saturate(1) grayscale(0)', rotate: -8, scale: [1.5, 0.94, 1.05, 1] }
-            : { opacity: 0.35, filter: 'saturate(0.7) grayscale(0.15)', rotate: -8, scale: 1 }
+            ? { opacity: 1, rotate: -8, scale: [1.4, 0.95, 1.05, 1] }
+            : { opacity: 0.4, rotate: -8, scale: 1 }
         }
         transition={
           isReady
-            ? { duration: 0.6, times: [0, 0.55, 0.75, 1], ease: [0.2, 0.7, 0.3, 1] }
-            : { duration: 0.4, ease: 'easeOut' }
+            ? { duration: 0.5, times: [0, 0.5, 0.75, 1], ease: [0.2, 0.7, 0.3, 1] }
+            : { duration: 0.3, ease: 'easeOut' }
         }
         className="absolute inset-0 flex items-center justify-center text-stamp font-serif font-bold text-[10px] sm:text-[12px] leading-[1.3] text-center"
       >

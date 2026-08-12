@@ -27,8 +27,8 @@ export function FormSection({ num, part, title, subtitle, isFilled, children, de
         <div className="flex-none flex flex-col items-center gap-[2px]">
           <motion.span
             animate={{
-              backgroundColor: isFilled ? 'var(--color-stamp)' : 'transparent',
-              color: isFilled ? 'var(--color-paper-raised)' : 'var(--color-stamp)',
+              backgroundColor: isFilled ? 'rgba(163, 64, 31, 1)' : 'rgba(163, 64, 31, 0)',
+              color: isFilled ? 'rgba(255, 253, 248, 1)' : 'rgba(163, 64, 31, 1)',
               opacity: isFilled ? 1 : 0.75,
             }}
             transition={{ duration: 0.3 }}
