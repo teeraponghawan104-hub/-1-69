@@ -1,0 +1,6 @@
+{
+  "name": "สัมมนาระหว่างฝึกปฏิบัติการสอน ๑",
+  "description": "ระบบถอดบทเรียนก่อนออกฝึกและสัมมนาสะท้อนผลการปฏิบัติการสอน สาขาวิชาวิทยาศาสตร์ทั่วไป มหาวิทยาลัยราชภัฏศรีสะเกษ",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
