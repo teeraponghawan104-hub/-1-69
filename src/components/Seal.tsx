@@ -35,7 +35,7 @@ export function Seal({ isReady }: SealProps) {
           }}
         ></div>
         
-        <span className="relative z-10 tracking-[0.02em]">พร้อม<br/>ออกฝึก</span>
+        <span className="relative z-10 tracking-[0.02em]">พี่สู่<br/>น้อง</span>
       </motion.div>
     </div>
   );
