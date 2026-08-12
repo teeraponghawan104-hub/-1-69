@@ -1,6 +1,6 @@
 import { motion, AnimatePresence } from 'motion/react';
 import { Lock, Trash2, X } from 'lucide-react';
-import { useState } from 'react';
+import { useState, FormEvent } from 'react';
 import { Entry } from '../types';
 
 interface DeleteModalProps {
@@ -15,7 +15,7 @@ export function DeleteModal({ entry, onClose, onConfirm }: DeleteModalProps) {
 
   if (!entry) return null;
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = (e: FormEvent) => {
     e.preventDefault();
     if (passcode.trim() === '112003') {
       onConfirm(entry.id);

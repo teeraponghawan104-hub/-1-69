@@ -4,6 +4,7 @@ import { Entry, LABELS } from '../types';
 import { formatDate, getAvatarColor, getInitials, seededIndex } from '../utils';
 
 interface EntryCardProps {
+  key?: string | number;
   entry: Entry;
   index: number;
   onEdit?: (entry: Entry) => void;

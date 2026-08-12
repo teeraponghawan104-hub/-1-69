@@ -26,7 +26,7 @@ export const storage = {
     // Fallback to standard localStorage
     try {
       const data = localStorage.getItem(GROUP_KEY);
-      return data ? JSON.parse(data).sort((a: Entry, b: Entry) => b.submittedAt.localeCompare(a.submittedAt)) : [];
+      return data ? JSON.parse(data).sort((a: Entry, b: Entry) => (b.submittedAt || '').localeCompare(a.submittedAt || '')) : [];
     } catch (e) {
       return [];
     }

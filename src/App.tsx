@@ -54,7 +54,7 @@ export default function App() {
   useEffect(() => {
     if (editingEntry) return; // Don't overwrite draft while editing saved entry
 
-    const hasContent = Object.values(formData).some(v => v.trim() !== '');
+    const hasContent = Object.values(formData).some(v => typeof v === 'string' && v.trim() !== '');
     if (hasContent) {
       const now = new Date();
       const timeStr = now.toLocaleTimeString('th-TH', { hour: '2-digit', minute: '2-digit' }) + ' น.';
