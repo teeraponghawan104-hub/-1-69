@@ -1,35 +1,35 @@
 import { Entry, FormData, LABELS } from './types';
+import { collection, doc, getDocs, setDoc, updateDoc, deleteDoc, onSnapshot } from 'firebase/firestore';
+import { db } from './firebase';
 
-const GROUP_KEY = 'entries:mid-secondary';
+const COLLECTION_NAME = 'entries';
 
 export const storage = {
   getEntries: async (): Promise<Entry[]> => {
-    // Attempt to use custom window.storage if available (per user's original HTML context)
-    // @ts-ignore
-    if (typeof window !== 'undefined' && window.storage) {
-      try {
-        // @ts-ignore
-        const listResult = await window.storage.list(GROUP_KEY + ':', true);
-        const keys = (listResult && listResult.keys) || [];
-        const entries: Entry[] = [];
-        for (const k of keys) {
-          // @ts-ignore
-          const r = await window.storage.get(k, true);
-          if (r && r.value) entries.push(JSON.parse(r.value));
-        }
-        return entries.sort((a, b) => (b.submittedAt || '').localeCompare(a.submittedAt || ''));
-      } catch (e) {
-        console.error("Window storage fetch error, falling back to localStorage", e);
-      }
-    }
-    
-    // Fallback to standard localStorage
     try {
-      const data = localStorage.getItem(GROUP_KEY);
-      return data ? JSON.parse(data).sort((a: Entry, b: Entry) => (b.submittedAt || '').localeCompare(a.submittedAt || '')) : [];
+      const querySnapshot = await getDocs(collection(db, COLLECTION_NAME));
+      const entries: Entry[] = [];
+      querySnapshot.forEach((doc) => {
+        entries.push(doc.data() as Entry);
+      });
+      return entries.sort((a, b) => (b.submittedAt || '').localeCompare(a.submittedAt || ''));
     } catch (e) {
+      console.error("Firebase getEntries error", e);
       return [];
     }
+  },
+
+  subscribeEntries: (callback: (entries: Entry[]) => void) => {
+    return onSnapshot(collection(db, COLLECTION_NAME), (querySnapshot) => {
+      const entries: Entry[] = [];
+      querySnapshot.forEach((doc) => {
+        entries.push(doc.data() as Entry);
+      });
+      entries.sort((a, b) => (b.submittedAt || '').localeCompare(a.submittedAt || ''));
+      callback(entries);
+    }, (error) => {
+      console.error("Firebase subscribe error", error);
+    });
   },
 
   saveEntry: async (entryData: FormData): Promise<void> => {
@@ -38,67 +38,16 @@ export const storage = {
       id: 'e' + Date.now() + '-' + Math.random().toString(36).slice(2, 7),
       submittedAt: new Date().toISOString(),
     };
-
-    // @ts-ignore
-    if (typeof window !== 'undefined' && window.storage) {
-      try {
-        // @ts-ignore
-        await window.storage.set(GROUP_KEY + ':' + newEntry.id, JSON.stringify(newEntry), true);
-        return;
-      } catch (e) {
-        console.error("Window storage save error, falling back to localStorage", e);
-      }
-    }
-
-    // Fallback
-    const current = await storage.getEntries();
-    current.push(newEntry);
-    localStorage.setItem(GROUP_KEY, JSON.stringify(current));
+    await setDoc(doc(db, COLLECTION_NAME, newEntry.id), newEntry);
   },
 
   updateEntry: async (entry: Entry): Promise<void> => {
     // @ts-ignore
-    if (typeof window !== 'undefined' && window.storage) {
-      try {
-        // @ts-ignore
-        await window.storage.set(GROUP_KEY + ':' + entry.id, JSON.stringify(entry), true);
-        return;
-      } catch (e) {
-        console.error("Window storage update error, falling back to localStorage", e);
-      }
-    }
-
-    const current = await storage.getEntries();
-    const idx = current.findIndex(e => e.id === entry.id);
-    if (idx !== -1) {
-      current[idx] = entry;
-    } else {
-      current.push(entry);
-    }
-    localStorage.setItem(GROUP_KEY, JSON.stringify(current));
+    await updateDoc(doc(db, COLLECTION_NAME, entry.id), { ...entry });
   },
 
   deleteEntry: async (id: string): Promise<void> => {
-    // @ts-ignore
-    if (typeof window !== 'undefined' && window.storage) {
-      try {
-        // @ts-ignore
-        if (typeof window.storage.delete === 'function') {
-          // @ts-ignore
-          await window.storage.delete(GROUP_KEY + ':' + id, true);
-        } else {
-          // @ts-ignore
-          await window.storage.set(GROUP_KEY + ':' + id, '', true);
-        }
-        return;
-      } catch (e) {
-        console.error("Window storage delete error, falling back to localStorage", e);
-      }
-    }
-
-    const current = await storage.getEntries();
-    const filtered = current.filter(e => e.id !== id);
-    localStorage.setItem(GROUP_KEY, JSON.stringify(filtered));
+    await deleteDoc(doc(db, COLLECTION_NAME, id));
   }
 };
 

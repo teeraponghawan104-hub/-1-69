@@ -113,10 +113,12 @@ export default function App() {
   };
 
   useEffect(() => {
-    if (activeTab === 'list') {
-      loadEntries();
-    }
-  }, [activeTab]);
+    // Subscribe to real-time updates across the app
+    const unsubscribe = storage.subscribeEntries((data) => {
+      setEntries(data);
+    });
+    return () => unsubscribe();
+  }, []);
 
   const handleStartEdit = (entry: Entry) => {
     setEditingEntry(entry);
